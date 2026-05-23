@@ -120,244 +120,190 @@ export default function SignUpPage() {
             </p>
           </div>
 
-          {success ? (
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              style={{ textAlign: "center", padding: "20px 0" }}
-            >
-              <div style={{
-                width: 54, height: 54, borderRadius: "50%",
-                background: "rgba(34,197,94,0.1)",
-                border: "1px solid rgba(34,197,94,0.3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                margin: "0 auto 18px",
-              }}>
-                <CheckCircle size={26} color="#22c55e" />
-              </div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}>Secure Identity Registered</h3>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginTop: 8, lineHeight: 1.6 }}>
-                Your decentralized wallet identity keys have been generated and securely cached. Welcome to Escrowz.
-              </p>
-              
-              <div style={{
-                marginTop: 24,
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            {/* Username */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{
                 fontFamily: "var(--font-geist-mono), monospace",
-                fontSize: 11,
-                color: CYAN,
-                padding: "8px 12px",
-                background: "rgba(0,240,255,0.06)",
-                border: `1px solid rgba(0,240,255,0.2)`,
-                borderRadius: 8,
-                display: "inline-block"
+                fontSize: 11, color: "rgba(255,255,255,0.5)",
+                letterSpacing: "0.05em", textTransform: "uppercase"
               }}>
-                IDENTITY_HASH: sha256_e821b0ff456e
-              </div>
-
-              <div style={{ marginTop: 24 }}>
-                <a
-                  href="/"
+                Username
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
+                  <User size={16} />
+                </span>
+                <input
+                  type="text"
+                  required
+                  placeholder="agent_escrowz"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   style={{
-                    display: "inline-block",
-                    padding: "12px 24px",
+                    width: "100%",
+                    padding: "12px 14px 12px 42px",
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 12,
-                    background: BLUE,
                     color: "#fff",
-                    textDecoration: "none",
-                    fontWeight: 600,
-                    fontSize: 13,
+                    fontSize: 14,
+                    outline: "none",
+                    transition: "border-color 0.2s, background 0.2s",
                   }}
-                >
-                  Enter Escrow Dashboard
-                </a>
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = BLUE;
+                    e.currentTarget.style.background = "rgba(59,130,246,0.02)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                  }}
+                />
               </div>
-            </motion.div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {/* Username */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: 11, color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "0.05em", textTransform: "uppercase"
-                }}>
-                  Username
-                </label>
-                <div style={{ position: "relative" }}>
-                  <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
-                    <User size={16} />
-                  </span>
-                  <input
-                    type="text"
-                    required
-                    placeholder="agent_escrowz"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px 12px 42px",
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 12,
-                      color: "#fff",
-                      fontSize: 14,
-                      outline: "none",
-                      transition: "border-color 0.2s, background 0.2s",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = BLUE;
-                      e.currentTarget.style.background = "rgba(59,130,246,0.02)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                      e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-                    }}
-                  />
-                </div>
-              </div>
+            </div>
 
-              {/* Email */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: 11, color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "0.05em", textTransform: "uppercase"
-                }}>
-                  Email
-                </label>
-                <div style={{ position: "relative" }}>
-                  <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
-                    <Mail size={16} />
-                  </span>
-                  <input
-                    type="email"
-                    required
-                    placeholder="agent@escrowz.lol"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px 12px 42px",
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 12,
-                      color: "#fff",
-                      fontSize: 14,
-                      outline: "none",
-                      transition: "border-color 0.2s, background 0.2s",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = BLUE;
-                      e.currentTarget.style.background = "rgba(59,130,246,0.02)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                      e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-                    }}
-                  />
-                </div>
+            {/* Email */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: 11, color: "rgba(255,255,255,0.5)",
+                letterSpacing: "0.05em", textTransform: "uppercase"
+              }}>
+                Email
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
+                  <Mail size={16} />
+                </span>
+                <input
+                  type="email"
+                  required
+                  placeholder="agent@escrowz.lol"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "12px 14px 12px 42px",
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 12,
+                    color: "#fff",
+                    fontSize: 14,
+                    outline: "none",
+                    transition: "border-color 0.2s, background 0.2s",
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = BLUE;
+                    e.currentTarget.style.background = "rgba(59,130,246,0.02)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                  }}
+                />
               </div>
+            </div>
 
-              {/* Password */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: 11, color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "0.05em", textTransform: "uppercase"
-                }}>
-                  Password
-                </label>
-                <div style={{ position: "relative" }}>
-                  <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
-                    <Lock size={16} />
-                  </span>
-                  <input
-                    type="password"
-                    required
-                    placeholder="••••••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "12px 14px 12px 42px",
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 12,
-                      color: "#fff",
-                      fontSize: 14,
-                      outline: "none",
-                      transition: "border-color 0.2s, background 0.2s",
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = CYAN;
-                      e.currentTarget.style.background = "rgba(0,240,255,0.02)";
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                      e.currentTarget.style.background = "rgba(255,255,255,0.02)";
-                    }}
-                  />
-                </div>
+            {/* Password */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{
+                fontFamily: "var(--font-geist-mono), monospace",
+                fontSize: 11, color: "rgba(255,255,255,0.5)",
+                letterSpacing: "0.05em", textTransform: "uppercase"
+              }}>
+                Password
+              </label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
+                  <Lock size={16} />
+                </span>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "12px 14px 12px 42px",
+                    background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 12,
+                    color: "#fff",
+                    fontSize: 14,
+                    outline: "none",
+                    transition: "border-color 0.2s, background 0.2s",
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = CYAN;
+                    e.currentTarget.style.background = "rgba(0,240,255,0.02)";
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                  }}
+                />
               </div>
+            </div>
 
-              {/* Button */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                style={{
-                  width: "100%",
-                  padding: "14px",
-                  borderRadius: 12,
-                  background: `linear-gradient(135deg, ${CYAN}, ${BLUE})`,
-                  color: "#030408",
-                  border: "none",
-                  fontWeight: 900,
-                  fontSize: 13,
-                  cursor: "pointer",
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  marginTop: 8,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: `0 4px 20px rgba(0,240,255,0.25)`,
-                  transition: "transform 0.15s, box-shadow 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.boxShadow = `0 4px 30px rgba(0,240,255,0.45)`;
-                    e.currentTarget.style.transform = "scale(1.02)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.boxShadow = `0 4px 20px rgba(0,240,255,0.25)`;
-                    e.currentTarget.style.transform = "scale(1)";
-                  }
-                }}
-              >
-                {isLoading ? (
-                  <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
-                    Generating Wallet Address
-                    <span style={{ display: "inline-flex", gap: 3 }}>
-                      {[0, 1, 2].map((i) => (
-                        <span key={i} style={{
-                          width: 4, height: 4, borderRadius: "50%", background: "#030408",
-                          animation: "pulseDot 1s infinite alternate", animationDelay: `${i * 0.2}s`
-                        }} />
-                      ))}
-                    </span>
+            {/* Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              style={{
+                width: "100%",
+                padding: "14px",
+                borderRadius: 12,
+                background: `linear-gradient(135deg, ${CYAN}, ${BLUE})`,
+                color: "#030408",
+                border: "none",
+                fontWeight: 900,
+                fontSize: 13,
+                cursor: "pointer",
+                fontFamily: "var(--font-geist-mono), monospace",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                marginTop: 8,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: `0 4px 20px rgba(0,240,255,0.25)`,
+                transition: "transform 0.15s, box-shadow 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoading) {
+                  e.currentTarget.style.boxShadow = `0 4px 30px rgba(0,240,255,0.45)`;
+                  e.currentTarget.style.transform = "scale(1.02)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isLoading) {
+                  e.currentTarget.style.boxShadow = `0 4px 20px rgba(0,240,255,0.25)`;
+                  e.currentTarget.style.transform = "scale(1)";
+                }
+              }}
+            >
+              {isLoading ? (
+                <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+                  Generating Wallet Address
+                  <span style={{ display: "inline-flex", gap: 3 }}>
+                    {[0, 1, 2].map((i) => (
+                      <span key={i} style={{
+                        width: 4, height: 4, borderRadius: "50%", background: "#030408",
+                        animation: "pulseDot 1s infinite alternate", animationDelay: `${i * 0.2}s`
+                      }} />
+                    ))}
                   </span>
-                ) : "Create Secure Account"}
-              </button>
+                </span>
+              ) : "Create Secure Account"}
+            </button>
 
-              <div style={{ textAlign: "center", marginTop: 12, fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
-                Already onboarding?{" "}
-                <a href="/signin" style={{ color: BLUE, textDecoration: "none", fontWeight: 600 }}>Authorize access</a>
-              </div>
-            </form>
-          )}
+            <div style={{ textAlign: "center", marginTop: 12, fontSize: 13, color: "rgba(255,255,255,0.4)" }}>
+              Already onboarding?{" "}
+              <a href="/signin" style={{ color: BLUE, textDecoration: "none", fontWeight: 600 }}>Authorize access</a>
+            </div>
+          </form>
         </motion.div>
       </div>
 
