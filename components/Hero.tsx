@@ -70,9 +70,13 @@ const STAGE_MS  = [2200, 2200, 2200, 1800];
 const PROGRESS  = [8, 50, 85, 100];
 
 /* ── Animated Deal Card ── */
-function DealCard({ tiltX, tiltY }: { tiltX: number; tiltY: number }) {
+function DealCard() {
   const [dealIdx, setDealIdx] = useState(0);
   const [stage,   setStage]   = useState(0);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -86,28 +90,73 @@ function DealCard({ tiltX, tiltY }: { tiltX: number; tiltY: number }) {
     return () => clearTimeout(t);
   }, [stage, dealIdx]);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x, y });
+
+    const glareX = ((e.clientX - rect.left) / rect.width) * 100;
+    const glareY = ((e.clientY - rect.top) / rect.height) * 100;
+    setGlarePos({ x: glareX, y: glareY });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 });
+  };
+
   const deal     = deals[dealIdx];
   const released = stage === 3;
   const progress = PROGRESS[stage];
+  const maxTilt  = 28; // Highly apparent responsive tilt
 
   return (
     <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={{
         width: "100%",
         maxWidth: 340,
-        transform: `perspective(900px) rotateY(${tiltX * 10}deg) rotateX(${tiltY * -10}deg)`,
-        transition: "transform 0.18s ease-out",
+        transform: isHovered
+          ? `perspective(1000px) rotateY(${tilt.x * maxTilt}deg) rotateX(${tilt.y * -maxTilt}deg) scale(1.03)`
+          : "perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)",
+        transition: isHovered
+          ? "transform 0.08s ease-out, box-shadow 0.15s ease"
+          : "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease",
         willChange: "transform",
+        cursor: "pointer",
+        position: "relative",
       }}
     >
       <div style={{
         borderRadius: 22,
         background: "linear-gradient(145deg, #0d1117 0%, #060810 100%)",
         border: "1px solid rgba(255,255,255,0.09)",
-        boxShadow: `0 28px 70px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.03) inset, 0 0 40px ${deal.color}15`,
+        boxShadow: isHovered
+          ? `0 35px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.05) inset, 0 0 50px ${deal.color}25`
+          : `0 28px 70px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.03) inset, 0 0 40px ${deal.color}15`,
         overflow: "hidden",
-        transition: "box-shadow 0.5s ease",
+        position: "relative",
       }}>
+        {/* Dynamic futuristic glare spotlight effect */}
+        {isHovered && (
+          <div style={{
+            position: "absolute",
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.07) 0%, transparent 65%)`,
+            pointerEvents: "none",
+            zIndex: 5,
+          }} />
+        )}
+
         {/* Color accent line at top */}
         <div style={{
           height: 2,
@@ -323,31 +372,13 @@ function DealCard({ tiltX, tiltY }: { tiltX: number; tiltY: number }) {
 
 /* ── Hero ── */
 export default function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const rect = heroRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = (e.clientX - rect.left)  / rect.width  - 0.5; // -0.5 to 0.5
-    const y = (e.clientY - rect.top)   / rect.height - 0.5;
-    setTilt({ x, y });
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setTilt({ x: 0, y: 0 });
-  }, []);
-
   const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
       id="hero"
-      ref={heroRef}
       className="cyber-grid"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -358,22 +389,18 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Ambient orbs — shift subtly with cursor */}
+      {/* Ambient orbs — static, no tilt */}
       <div style={{
         position: "absolute", top: "18%", left: "8%",
         width: 520, height: 520, borderRadius: "50%",
         background: `radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)`,
         filter: "blur(70px)", pointerEvents: "none",
-        transform: `translate(${tilt.x * 30}px, ${tilt.y * 20}px)`,
-        transition: "transform 0.4s ease-out",
       }} />
       <div style={{
         position: "absolute", bottom: "12%", right: "6%",
         width: 420, height: 420, borderRadius: "50%",
         background: `radial-gradient(circle, rgba(0,240,255,0.07) 0%, transparent 70%)`,
         filter: "blur(70px)", pointerEvents: "none",
-        transform: `translate(${tilt.x * -20}px, ${tilt.y * -15}px)`,
-        transition: "transform 0.4s ease-out",
       }} />
 
       <div
@@ -385,15 +412,8 @@ export default function Hero() {
           position: "relative", zIndex: 10,
         }}
       >
-        {/* ── Left column — subtle parallax counter-shift ── */}
-        <div
-          style={{
-            display: "flex", flexDirection: "column", gap: 28,
-            transform: `translateX(${tilt.x * -12}px) translateY(${tilt.y * -8}px)`,
-            transition: "transform 0.25s ease-out",
-            willChange: "transform",
-          }}
-        >
+        {/* ── Left column — static, no tilt ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -510,20 +530,14 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* ── Right column: 3D-tilting deal card ── */}
+        {/* ── Right column: 3D-tilting deal card only ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.93, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            display: "flex", justifyContent: "center",
-            /* Slight counter-motion for depth */
-            transform: `translateX(${tilt.x * 10}px) translateY(${tilt.y * 8}px)`,
-            transition: "transform 0.25s ease-out",
-            willChange: "transform",
-          }}
+          style={{ display: "flex", justifyContent: "center" }}
         >
-          <DealCard tiltX={tilt.x} tiltY={tilt.y} />
+          <DealCard />
         </motion.div>
       </div>
 
