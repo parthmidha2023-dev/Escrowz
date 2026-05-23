@@ -45,49 +45,48 @@ export default function Navbar() {
           transition: "top 0.3s ease",
         }}
       >
+        {/* 3-column grid: logo | nav-center | cta — guarantees true center */}
         <div
           className="glass"
           style={{
             borderRadius: 16,
             padding: "10px 24px",
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
             alignItems: "center",
-            justifyContent: "space-between",
+            gap: 16,
             boxShadow: "0 12px 40px rgba(0,0,0,0.7)",
-            position: "relative",
+            width: "100%",
           }}
         >
           {/* ── Logo (left) ── */}
           <a
             href="#hero"
             onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
-            style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}
+            style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
           >
             <div style={{
               width: 36, height: 36, borderRadius: 10,
               background: "rgba(59,130,246,0.12)",
               border: `1px solid rgba(59,130,246,0.35)`,
               display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
             }}>
               <Shield size={18} color={BLUE} />
             </div>
-            <span style={{ fontFamily: "var(--font-geist-mono), monospace", fontWeight: 700, fontSize: 17, color: "#fff" }}>
+            <span style={{
+              fontFamily: "var(--font-geist-mono), monospace",
+              fontWeight: 700, fontSize: 17, color: "#fff", whiteSpace: "nowrap",
+            }}>
               escrowz<span style={{ color: CYAN }}>.</span>
               <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 400, marginLeft: 2 }}>lol</span>
             </span>
           </a>
 
-          {/* ── Nav links (absolute center) ── */}
+          {/* ── Nav links (true center column) ── */}
           <nav
             className="nav-desktop"
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "flex",
-              gap: 36,
-              alignItems: "center",
-            }}
+            style={{ display: "flex", gap: 32, alignItems: "center", justifyContent: "center" }}
           >
             {navLinks.map((l) => (
               <a
@@ -97,7 +96,7 @@ export default function Navbar() {
                 style={{
                   fontFamily: "var(--font-geist-mono), monospace",
                   fontSize: 13, color: "rgba(255,255,255,0.6)",
-                  textDecoration: "none", display: "flex", alignItems: "center", gap: 6,
+                  textDecoration: "none", display: "flex", alignItems: "center", gap: 5,
                   transition: "color 0.2s", whiteSpace: "nowrap",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
@@ -110,7 +109,10 @@ export default function Navbar() {
           </nav>
 
           {/* ── CTA buttons (right) ── */}
-          <div className="nav-desktop" style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
+          <div
+            className="nav-desktop"
+            style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "flex-end" }}
+          >
             <a
               href="#hero"
               onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
@@ -118,7 +120,7 @@ export default function Navbar() {
                 fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
                 color: "rgba(255,255,255,0.65)", textDecoration: "none",
                 padding: "7px 14px", fontWeight: 600, letterSpacing: "0.08em",
-                textTransform: "uppercase", transition: "color 0.2s",
+                textTransform: "uppercase", transition: "color 0.2s", whiteSpace: "nowrap",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
@@ -133,7 +135,7 @@ export default function Navbar() {
                 background: BLUE, color: "#fff", textDecoration: "none",
                 padding: "8px 18px", borderRadius: 10, fontWeight: 700,
                 letterSpacing: "0.08em", textTransform: "uppercase",
-                display: "flex", alignItems: "center", gap: 5,
+                display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
                 boxShadow: "0 0 20px rgba(59,130,246,0.35)",
                 transition: "box-shadow 0.2s, transform 0.15s",
               }}
@@ -144,17 +146,18 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* ── Mobile toggle ── */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="nav-mobile"
-            style={{
-              background: "transparent", border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 10, padding: 8, color: "#fff", cursor: "pointer",
-            }}
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+          {/* ── Mobile: hamburger replaces CTA col ── */}
+          <div className="nav-mobile" style={{ display: "none", justifyContent: "flex-end" }}>
+            <button
+              onClick={() => setOpen(!open)}
+              style={{
+                background: "transparent", border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 10, padding: 8, color: "#fff", cursor: "pointer",
+              }}
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -184,7 +187,8 @@ export default function Navbar() {
                   fontFamily: "var(--font-geist-mono), monospace",
                   fontSize: 13, color: "rgba(255,255,255,0.7)",
                   textDecoration: "none", letterSpacing: "0.1em",
-                  textTransform: "uppercase", borderBottom: "1px solid rgba(255,255,255,0.05)",
+                  textTransform: "uppercase",
+                  borderBottom: "1px solid rgba(255,255,255,0.05)",
                 }}
               >
                 {l.name}
@@ -213,9 +217,6 @@ export default function Navbar() {
         @media (max-width: 768px) {
           .nav-desktop { display: none !important; }
           .nav-mobile  { display: flex !important; }
-        }
-        @media (min-width: 769px) {
-          .nav-mobile { display: none !important; }
         }
       `}</style>
     </>
