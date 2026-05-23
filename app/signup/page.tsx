@@ -174,40 +174,6 @@ export default function SignUpPage() {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {/* Account Sector */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <label style={{
-                  fontFamily: "var(--font-geist-mono), monospace",
-                  fontSize: 11, color: "rgba(255,255,255,0.5)",
-                  letterSpacing: "0.05em", textTransform: "uppercase"
-                }}>
-                  Primary Trading Sector
-                </label>
-                <select
-                  value={sector}
-                  onChange={(e) => setSector(e.target.value)}
-                  style={{
-                    width: "100%",
-                    padding: "12px 14px",
-                    background: "rgba(255,255,255,0.02)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 12,
-                    color: "#fff",
-                    fontSize: 14,
-                    outline: "none",
-                    cursor: "pointer",
-                    transition: "border-color 0.2s",
-                  }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = BLUE}
-                  onBlur={(e) => e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"}
-                >
-                  <option value="gaming" style={{ background: "#0d1117", color: "#fff" }}>Gaming Accounts & Assets</option>
-                  <option value="crypto" style={{ background: "#0d1117", color: "#fff" }}>OTC Crypto Swaps</option>
-                  <option value="freelance" style={{ background: "#0d1117", color: "#fff" }}>Freelance Service Swaps</option>
-                  <option value="digital" style={{ background: "#0d1117", color: "#fff" }}>Premium Digital Products</option>
-                </select>
-              </div>
-
               {/* Username */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <label style={{
@@ -215,7 +181,7 @@ export default function SignUpPage() {
                   fontSize: 11, color: "rgba(255,255,255,0.5)",
                   letterSpacing: "0.05em", textTransform: "uppercase"
                 }}>
-                  Security Alias / Username
+                  Username
                 </label>
                 <div style={{ position: "relative" }}>
                   <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
@@ -257,7 +223,7 @@ export default function SignUpPage() {
                   fontSize: 11, color: "rgba(255,255,255,0.5)",
                   letterSpacing: "0.05em", textTransform: "uppercase"
                 }}>
-                  Security Email ID
+                  Email
                 </label>
                 <div style={{ position: "relative" }}>
                   <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
@@ -299,7 +265,7 @@ export default function SignUpPage() {
                   fontSize: 11, color: "rgba(255,255,255,0.5)",
                   letterSpacing: "0.05em", textTransform: "uppercase"
                 }}>
-                  Secure Encryption Passphrase
+                  Password
                 </label>
                 <div style={{ position: "relative" }}>
                   <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
@@ -308,7 +274,7 @@ export default function SignUpPage() {
                   <input
                     type="password"
                     required
-                    placeholder="Minimum 8 complex characters"
+                    placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     style={{

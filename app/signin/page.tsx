@@ -179,7 +179,7 @@ export default function SignInPage() {
                   fontSize: 11, color: "rgba(255,255,255,0.5)",
                   letterSpacing: "0.05em", textTransform: "uppercase"
                 }}>
-                  Security Email ID
+                  Email
                 </label>
                 <div style={{ position: "relative" }}>
                   <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }}>
@@ -222,7 +222,7 @@ export default function SignInPage() {
                     fontSize: 11, color: "rgba(255,255,255,0.5)",
                     letterSpacing: "0.05em", textTransform: "uppercase"
                   }}>
-                    Hardware Passkey / Password
+                    Password
                   </label>
                   <a href="#" style={{ fontSize: 11, color: BLUE, textDecoration: "none" }}>Forgot?</a>
                 </div>
