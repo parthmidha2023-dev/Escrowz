@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #030408; /* Luxury deep matte black */
+  --color-foreground: #ffffff;
+  --color-cyber-blue: #00f0ff;
+  --color-electric-blue: #3b82f6;
+  --color-deep-blue: #0066ff;
+  --color-dark-gray: #0d0e12;
+  --color-cyber-gray: #08090d;
+  
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+:root {
+  --background: #030408;
+  --foreground: #ffffff;
+  --cyber-glow: 0 0 20px rgba(0, 240, 255, 0.15);
+  --electric-glow: 0 0 25px rgba(59, 130, 246, 0.25);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Custom cyber grid background with infinite scrolling or absolute positioning */
+.bg-cyber-grid {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center;
+}
+
+.bg-radial-dark {
+  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.04) 0%, rgba(3, 4, 8, 0) 75%);
+}
+
+/* Glassmorphism premium panels */
+.glass-panel {
+  background: rgba(8, 9, 13, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.glass-panel-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(10, 12, 18, 0.85);
+  border-color: rgba(0, 240, 255, 0.35);
+  box-shadow: 0 0 35px rgba(59, 130, 246, 0.15), inset 0 0 12px rgba(59, 130, 246, 0.05);
+  transform: translateY(-4px);
+}
+
+/* Hyper-realistic Glow Texts */
+.text-glow-blue {
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.text-glow-electric {
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.25);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030408;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.15);
+  border-radius: 10px;
+  border: 2px solid #030408;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.4);
+}
+
+/* Selection Color */
+::selection {
+  background: rgba(0, 240, 255, 0.2);
+  color: #ffffff;
+}
