@@ -37,8 +37,9 @@ export default function Navbar() {
         style={{
           position: "fixed",
           top: scrolled ? 12 : 20,
-          left: "50%",
-          transform: "translateX(-50%)",
+          left: 0,
+          right: 0,
+          margin: "0 auto",
           width: "92%",
           maxWidth: 1100,
           zIndex: 100,
@@ -47,12 +48,10 @@ export default function Navbar() {
       >
         {/* 3-column grid: logo | nav-center | cta — guarantees true center */}
         <div
-          className="glass"
+          className="glass glass-nav"
           style={{
             borderRadius: 16,
             padding: "10px 24px",
-            display: "grid",
-            gridTemplateColumns: "1fr auto 1fr",
             alignItems: "center",
             gap: 16,
             boxShadow: "0 12px 40px rgba(0,0,0,0.7)",
@@ -214,7 +213,15 @@ export default function Navbar() {
       </AnimatePresence>
 
       <style>{`
+        .glass-nav {
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
+        }
         @media (max-width: 768px) {
+          .glass-nav {
+            display: flex;
+            justify-content: space-between;
+          }
           .nav-desktop { display: none !important; }
           .nav-mobile  { display: flex !important; }
         }
