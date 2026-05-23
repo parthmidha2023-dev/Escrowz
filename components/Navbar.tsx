@@ -113,8 +113,7 @@ export default function Navbar() {
             style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "flex-end" }}
           >
             <a
-              href="#hero"
-              onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
+              href="/signin"
               style={{
                 fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
                 color: "rgba(255,255,255,0.65)", textDecoration: "none",
@@ -127,8 +126,7 @@ export default function Navbar() {
               Sign In
             </a>
             <a
-              href="#hero"
-              onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
+              href="/signup"
               style={{
                 fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
                 background: BLUE, color: "#fff", textDecoration: "none",
@@ -194,14 +192,14 @@ export default function Navbar() {
               </a>
             ))}
             <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-              <a href="#hero" onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }} style={{
+              <a href="/signin" style={{
                 flex: 1, textAlign: "center", padding: "10px",
                 border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10,
                 color: "#fff", textDecoration: "none",
                 fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
                 textTransform: "uppercase", letterSpacing: "0.08em",
               }}>Sign In</a>
-              <a href="#hero" onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }} style={{
+              <a href="/signup" style={{
                 flex: 1, textAlign: "center", padding: "10px",
                 background: BLUE, borderRadius: 10, color: "#fff", textDecoration: "none",
                 fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
