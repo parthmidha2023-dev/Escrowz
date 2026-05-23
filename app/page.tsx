@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -8,26 +7,14 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#030408] text-white flex flex-col font-sans select-none overflow-x-hidden antialiased">
-      {/* Universal Floating Navbar */}
+    <div style={{ background: "#030408", minHeight: "100vh", color: "#fff", overflowX: "hidden" }}>
       <Navbar />
-
-      {/* Main Container */}
-      <main className="flex-1 flex flex-col w-full">
-        {/* Futuristic Hero Section */}
+      <main>
         <Hero />
-
-        {/* High-Tech Features Section */}
         <Features />
-
-        {/* Digital Asset Categories Section */}
         <Categories />
-
-        {/* Live Ledger Stats Section */}
         <Stats />
       </main>
-
-      {/* Cryptographic Compliance Footer */}
       <Footer />
     </div>
   );

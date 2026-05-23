@@ -4,174 +4,259 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Server, Cpu, Database, Eye } from "lucide-react";
 
+const CYAN = "#00f0ff";
+const BLUE = "#3b82f6";
+
+const statsList = [
+  {
+    label: "TOTAL FUNDS SECURED",
+    value: "$42,891,402",
+    suffix: "+",
+    icon: ShieldCheck,
+    detail: "No leakage, zero capital risk history",
+    status: "SECURED VAULTS",
+    color: BLUE,
+  },
+  {
+    label: "ACTIVE NETWORK USERS",
+    value: "120,402",
+    suffix: "+",
+    icon: Server,
+    detail: "E2E P2P network handshakes",
+    status: "NODES: ACTIVE",
+    color: CYAN,
+  },
+  {
+    label: "DEALS COMPLETED",
+    value: "502,890",
+    suffix: "+",
+    icon: Cpu,
+    detail: "Automatic escrow resolutions",
+    status: "VERIFIED SIGNATURES",
+    color: "#a855f7",
+  },
+];
+
+const TICK_IDS = ["TX-8802", "TX-1094", "TX-5531", "TX-7740", "TX-9102"];
+const TICK_VALS = ["$350", "$14,500", "$8,200", "$1,950", "$28,000"];
+const TICK_TYPES = ["GAMING", "CRYPTO", "WORK", "DIGITAL", "CRYPTO"];
+
 export default function Stats() {
-  const [liveTransactions, setLiveTransactions] = useState<Array<{ id: string; val: string; type: string }>>([
+  const [txFeed, setTxFeed] = useState([
     { id: "TX-4029", val: "$1,250", type: "GAMING" },
     { id: "TX-9910", val: "$22,400", type: "CRYPTO" },
     { id: "TX-3122", val: "$4,500", type: "WORK" },
   ]);
 
-  // Simulate a live transaction ticker to show that the system is fully active
   useEffect(() => {
-    const interval = setInterval(() => {
-      const ids = ["TX-8802", "TX-1094", "TX-5531", "TX-7740", "TX-9102"];
-      const vals = ["$350.00", "$14,500.00", "$8,200.00", "$1,950.00", "$28,000.00"];
-      const types = ["GAMING", "CRYPTO", "WORK", "DIGITAL", "CRYPTO"];
-      
-      const randomIndex = Math.floor(Math.random() * ids.length);
-      
-      setLiveTransactions(prev => [
-        { id: ids[randomIndex], val: vals[randomIndex], type: types[randomIndex] },
-        prev[0],
-        prev[1],
-      ]);
+    const timer = setInterval(() => {
+      const i = Math.floor(Math.random() * TICK_IDS.length);
+      setTxFeed((prev) => [{ id: TICK_IDS[i], val: TICK_VALS[i], type: TICK_TYPES[i] }, prev[0], prev[1]]);
     }, 4000);
-
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
-  const statsList = [
-    {
-      label: "TOTAL FUNDS SECURED",
-      value: "$42,891,402",
-      suffix: "+",
-      icon: ShieldCheck,
-      details: "No leakage, zero capital risk history",
-      status: "SECURED VAULTS",
-      color: "text-blue-400 text-glow-electric",
-    },
-    {
-      label: "ACTIVE CRYPTO NODES",
-      value: "120,402",
-      suffix: "+",
-      icon: Server,
-      details: "E2E P2P network handshakes",
-      status: "NODES: ACTIVE",
-      color: "text-cyan-400 text-glow-blue",
-    },
-    {
-      label: "DEALS COMPLETED",
-      value: "502,890",
-      suffix: "+",
-      icon: Cpu,
-      details: "Automatic escrow resolutions",
-      status: "VERIFIED SIGNATURES",
-      color: "text-purple-400 text-glow-electric",
-    },
-  ];
-
   return (
-    <section id="stats" className="relative py-24 px-4 md:px-8 bg-zinc-950 overflow-hidden">
-      {/* Decorative Matrix Grid */}
-      <div className="absolute inset-0 bg-cyber-grid opacity-20 pointer-events-none" />
-      
-      {/* Radar sweep lines effect */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent animate-pulse" />
-      
-      <div className="relative max-w-6xl w-full mx-auto z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        {/* Left Column: Big statistics cards */}
-        <div className="lg:col-span-8 space-y-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-500/20 bg-blue-950/20 font-mono text-[10px] tracking-widest text-cyber-blue uppercase">
-              <span>Network Statistics</span>
+    <section
+      id="stats"
+      className="cyber-grid"
+      style={{
+        padding: "100px 24px",
+        background: "rgba(3,4,8,0.8)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Scan-line accent */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: 1,
+        background: `linear-gradient(to right, transparent, ${CYAN}30, transparent)`,
+        pointerEvents: "none",
+      }} />
+
+      <div style={{
+        maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2,
+        display: "grid", gridTemplateColumns: "1fr auto",
+        gap: 64, alignItems: "center",
+      }}
+        className="stats-grid"
+      >
+        {/* ── Left: Header + stat cards ── */}
+        <div>
+          <div style={{ marginBottom: 40 }}>
+            <div style={{
+              display: "inline-flex", padding: "5px 14px", borderRadius: 999,
+              border: `1px solid rgba(59,130,246,0.25)`, background: "rgba(59,130,246,0.07)",
+              fontFamily: "var(--font-geist-mono), monospace", fontSize: 10,
+              color: CYAN, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 18,
+            }}>
+              Network Statistics
             </div>
-            
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-              Secured Ledger. <br />
-              <span className="text-white/50">Verified Live Data.</span>
+            <h2 style={{
+              fontSize: "clamp(1.8rem, 3.5vw, 3rem)", fontWeight: 900,
+              lineHeight: 1.15, letterSpacing: "-0.02em", color: "#fff",
+            }}>
+              Secured Ledger.<br />
+              <span style={{ color: "rgba(255,255,255,0.4)" }}>Verified Live Data.</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {statsList.map((stat, idx) => {
-              const StatIcon = stat.icon;
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }} className="stats-cards">
+            {statsList.map((s, i) => {
+              const Icon = s.icon;
               return (
                 <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 25 }}
+                  key={s.label}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="glass-panel rounded-2xl p-5 border border-white/5 bg-zinc-950/70 hover:border-blue-500/20 transition-colors cursor-default"
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  className="glass"
+                  style={{
+                    borderRadius: 16, padding: "20px 18px",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    transition: "border-color 0.3s",
+                  }}
+                  whileHover={{ borderColor: "rgba(59,130,246,0.25)" }}
                 >
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="font-mono text-[9px] tracking-widest text-white/40 uppercase">
-                      {stat.status}
-                    </span>
-                    <StatIcon className="w-4 h-4 text-white/30" />
+                  <div style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14,
+                  }}>
+                    <span style={{
+                      fontFamily: "var(--font-geist-mono), monospace",
+                      fontSize: 8, color: "rgba(255,255,255,0.3)",
+                      textTransform: "uppercase", letterSpacing: "0.1em",
+                    }}>{s.status}</span>
+                    <Icon size={14} color="rgba(255,255,255,0.25)" />
                   </div>
-                  
-                  <div className="space-y-1">
-                    <p className={`text-2xl sm:text-3xl font-mono font-extrabold tracking-tight ${stat.color}`}>
-                      {stat.value}
-                      <span className="text-white/60 font-sans">{stat.suffix}</span>
-                    </p>
-                    <p className="font-mono text-[10px] text-white/80 font-bold uppercase tracking-wider">
-                      {stat.label}
-                    </p>
-                  </div>
-
-                  <p className="text-[10px] text-white/40 mt-3 pt-3 border-t border-white/5">
-                    {stat.details}
+                  <p style={{
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: "clamp(1.3rem, 2vw, 1.7rem)", fontWeight: 900,
+                    color: s.color, lineHeight: 1,
+                    textShadow: `0 0 20px ${s.color}44`,
+                  }}>
+                    {s.value}<span style={{ color: "rgba(255,255,255,0.5)", fontWeight: 400 }}>{s.suffix}</span>
                   </p>
+                  <p style={{
+                    fontFamily: "var(--font-geist-mono), monospace",
+                    fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.7)",
+                    textTransform: "uppercase", letterSpacing: "0.08em", marginTop: 6,
+                  }}>{s.label}</p>
+                  <p style={{
+                    fontSize: 10, color: "rgba(255,255,255,0.35)", marginTop: 10,
+                    paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.05)",
+                  }}>{s.detail}</p>
                 </motion.div>
               );
             })}
           </div>
         </div>
 
-        {/* Right Column: Live Simulated Network Ledger Feed */}
+        {/* ── Right: Live feed ── */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0, x: 28 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="lg:col-span-4 w-full"
+          style={{ width: 280, flexShrink: 0 }}
         >
-          <div className="glass-panel rounded-2xl p-5 border border-blue-500/20 bg-zinc-950/80 shadow-[0_15px_30px_rgba(0,0,0,0.6)] relative overflow-hidden">
-            {/* Ambient Sweep Line */}
-            <div className="absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent top-0 animate-[radar-sweep_5s_linear_infinite]" />
-            
-            <div className="flex items-center justify-between pb-4 border-b border-white/5 mb-4">
-              <div className="flex items-center gap-2">
-                <Database className="w-4 h-4 text-cyber-blue animate-pulse" />
-                <span className="font-mono text-[10px] font-bold text-white tracking-widest uppercase">Live Deal Ledger</span>
+          <div
+            className="glass"
+            style={{
+              borderRadius: 18, padding: "18px 16px",
+              border: `1px solid rgba(59,130,246,0.2)`,
+              boxShadow: "0 16px 40px rgba(0,0,0,0.6)",
+              position: "relative", overflow: "hidden",
+            }}
+          >
+            {/* Scan line */}
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 0, height: 2,
+              background: `linear-gradient(to right, transparent, ${CYAN}40, transparent)`,
+              animation: "scan-line 4s linear infinite",
+            }} />
+
+            {/* Header */}
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              marginBottom: 14, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                <Database size={14} color={CYAN} />
+                <span style={{
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: 9, fontWeight: 700, color: "#fff",
+                  textTransform: "uppercase", letterSpacing: "0.1em",
+                }}>Live Deal Ledger</span>
               </div>
-              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                <span className="w-1 h-1 bg-emerald-500 rounded-full animate-ping" />
-                <span className="font-mono text-[8px] font-bold text-emerald-400 uppercase">SYNCED</span>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 5,
+                padding: "3px 8px", borderRadius: 6,
+                background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.25)",
+              }}>
+                <span style={{
+                  width: 5, height: 5, borderRadius: "50%", background: "#22c55e",
+                  display: "inline-block",
+                }} />
+                <span style={{
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: 8, fontWeight: 700, color: "#22c55e", textTransform: "uppercase",
+                }}>SYNCED</span>
               </div>
             </div>
 
-            <div className="space-y-3">
-              {liveTransactions.map((tx, idx) => (
+            {/* Feed items */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {txFeed.map((tx, idx) => (
                 <motion.div
                   key={`${tx.id}-${idx}`}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex items-center justify-between p-3 rounded-xl border border-white/5 bg-zinc-900/30 hover:bg-zinc-900/60 transition-colors"
+                  transition={{ duration: 0.35 }}
+                  style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    padding: "10px 12px", borderRadius: 11,
+                    border: "1px solid rgba(255,255,255,0.05)",
+                    background: "rgba(0,0,0,0.25)",
+                  }}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-2 h-2 rounded-full bg-blue-500/50" />
+                  <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: "50%", background: `${BLUE}80`, display: "inline-block" }} />
                     <div>
-                      <span className="font-mono text-[10px] font-bold text-white">{tx.id}</span>
-                      <span className="font-mono text-[9px] text-white/30 uppercase block font-light tracking-wide">{tx.type}</span>
+                      <span style={{
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        fontSize: 10, fontWeight: 700, color: "#fff", display: "block",
+                      }}>{tx.id}</span>
+                      <span style={{
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        fontSize: 8, color: "rgba(255,255,255,0.3)", textTransform: "uppercase",
+                      }}>{tx.type}</span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className="font-mono text-xs font-bold text-cyber-blue text-glow-blue">{tx.val}</span>
-                    <span className="font-mono text-[8px] text-emerald-400 block uppercase font-bold tracking-widest mt-0.5">LOCKED</span>
+                  <div style={{ textAlign: "right" }}>
+                    <span style={{
+                      fontFamily: "var(--font-geist-mono), monospace",
+                      fontSize: 12, fontWeight: 700, color: CYAN,
+                      textShadow: `0 0 10px ${CYAN}66`, display: "block",
+                    }}>{tx.val}</span>
+                    <span style={{
+                      fontFamily: "var(--font-geist-mono), monospace",
+                      fontSize: 8, fontWeight: 700, color: "#22c55e", textTransform: "uppercase",
+                    }}>LOCKED</span>
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between font-mono text-[8.5px] text-white/30">
-              <span className="flex items-center gap-1">
-                <Eye className="w-3 h-3 text-white/30" />
-                INTEGRITY: SHA-512
+            {/* Footer */}
+            <div style={{
+              marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              fontFamily: "var(--font-geist-mono), monospace", fontSize: 8,
+              color: "rgba(255,255,255,0.25)",
+            }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <Eye size={10} color="rgba(255,255,255,0.25)" /> INTEGRITY: SHA-512
               </span>
               <span>LATENCY: 14MS</span>
             </div>
@@ -179,23 +264,10 @@ export default function Stats() {
         </motion.div>
       </div>
 
-      {/* Embedded CSS for custom keyframes radar sweep */}
-      <style jsx global>{`
-        @keyframes radar-sweep {
-          0% {
-            top: 0%;
-            opacity: 0;
-          }
-          5% {
-            opacity: 1;
-          }
-          95% {
-            opacity: 1;
-          }
-          100% {
-            top: 100%;
-            opacity: 0;
-          }
+      <style>{`
+        @media (max-width: 900px) {
+          .stats-grid { grid-template-columns: 1fr !important; }
+          .stats-cards { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>

@@ -2,170 +2,230 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Gamepad2, Coins, Briefcase, Globe, CheckCircle2, ChevronRight } from "lucide-react";
+import { Gamepad2, Coins, Briefcase, Globe, CheckCircle2 } from "lucide-react";
+
+const CYAN = "#00f0ff";
+
+const categories = [
+  {
+    title: "Gaming Accounts",
+    tag: "HIGH VALUE DIGITAL ITEMS",
+    icon: Gamepad2,
+    items: ["Steam & Epic Games Accounts", "Valorant & League Profiles", "Rare CS2 Skins & Knives", "Clash of Clans & Mobile Assets"],
+    metrics: { pool: "$1.4M+", time: "~4 Mins", active: "1,240 Deals" },
+    accent: "#3b82f6",
+    bg: "rgba(59,130,246,0.06)",
+    border: "rgba(59,130,246,0.2)",
+    hoverBorder: "rgba(59,130,246,0.45)",
+    hoverGlow: "0 0 40px rgba(59,130,246,0.18)",
+  },
+  {
+    title: "Crypto Trades",
+    tag: "DECENTRALIZED ASSETS",
+    icon: Coins,
+    items: ["OTC Token Agreements", "Rare NFTs & Digital Art", "Cross-Chain Asset Swaps", "Custom ERC-20 Escrow Vaults"],
+    metrics: { pool: "$8.9M+", time: "<1 Min", active: "4,820 Deals" },
+    accent: CYAN,
+    bg: "rgba(0,240,255,0.05)",
+    border: "rgba(0,240,255,0.18)",
+    hoverBorder: "rgba(0,240,255,0.45)",
+    hoverGlow: "0 0 40px rgba(0,240,255,0.12)",
+  },
+  {
+    title: "Freelance Work",
+    tag: "CONTRACTS & MILESTONES",
+    icon: Briefcase,
+    items: ["Software & App Development", "UI/UX & Branding Assets", "Copywriting & Marketing", "Consulting & Agreements"],
+    metrics: { pool: "$3.1M+", time: "Custom", active: "910 Deals" },
+    accent: "#6366f1",
+    bg: "rgba(99,102,241,0.06)",
+    border: "rgba(99,102,241,0.2)",
+    hoverBorder: "rgba(99,102,241,0.45)",
+    hoverGlow: "0 0 40px rgba(99,102,241,0.18)",
+  },
+  {
+    title: "Digital Products",
+    tag: "IP & DOMAIN PORTABILITY",
+    icon: Globe,
+    items: ["Premium Web Domains", "SaaS Licensing Codes", "Social Handles & Usernames", "Proprietary Source Code"],
+    metrics: { pool: "$5.6M+", time: "~15 Mins", active: "2,350 Deals" },
+    accent: "#a855f7",
+    bg: "rgba(168,85,247,0.06)",
+    border: "rgba(168,85,247,0.2)",
+    hoverBorder: "rgba(168,85,247,0.45)",
+    hoverGlow: "0 0 40px rgba(168,85,247,0.18)",
+  },
+];
 
 export default function Categories() {
-  const categoriesList = [
-    {
-      title: "Gaming Accounts",
-      icon: Gamepad2,
-      tag: "HIGH VALUE DIGITAL ITEMS",
-      items: ["Steam & Epic Games Accounts", "Valorant & League Profiles", "Rare CS2 Skins & Knives", "Clash of Clans & Mobile Assets"],
-      metrics: { pool: "$1.4M+", time: "~4 Mins", active: "1,240 Deals" },
-      glow: "hover:border-blue-500/40 hover:shadow-[0_0_35px_rgba(59,130,246,0.15)]",
-      iconColor: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-      bgAccent: "from-blue-600/10 via-transparent to-transparent",
-    },
-    {
-      title: "Crypto Trades",
-      icon: Coins,
-      tag: "DECENTRALIZED ASSETS",
-      items: ["OTC Token Agreements", "Rare NFTs & Digital Art", "Cross-Chain Asset Swaps", "Custom ERC-20 Escrow Vaults"],
-      metrics: { pool: "$8.9M+", time: "<1 Min", active: "4,820 Deals" },
-      glow: "hover:border-cyan-500/40 hover:shadow-[0_0_35px_rgba(6,182,212,0.15)]",
-      iconColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/20",
-      bgAccent: "from-cyan-600/10 via-transparent to-transparent",
-    },
-    {
-      title: "Freelance Work",
-      icon: Briefcase,
-      tag: "CONTRACTS & MILESTONES",
-      items: ["Software & App Development", "UI/UX & Branding Assets", "Copywriting & Marketing Campaigns", "Consulting & Long-Term Agreements"],
-      metrics: { pool: "$3.1M+", time: "Custom", active: "910 Deals" },
-      glow: "hover:border-indigo-500/40 hover:shadow-[0_0_35px_rgba(99,102,241,0.15)]",
-      iconColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
-      bgAccent: "from-indigo-600/10 via-transparent to-transparent",
-    },
-    {
-      title: "Digital Products",
-      icon: Globe,
-      tag: "IP & DOMAIN PORTABILITY",
-      items: ["Premium Web Domains & DNS", "SaaS Licensing Codes", "Social Handles & Premium Usernames", "Proprietary Source Code Repos"],
-      metrics: { pool: "$5.6M+", time: "~15 Mins", active: "2,350 Deals" },
-      glow: "hover:border-purple-500/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.15)]",
-      iconColor: "text-purple-400 bg-purple-500/10 border-purple-500/20",
-      bgAccent: "from-purple-600/10 via-transparent to-transparent",
-    },
-  ];
-
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 20 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const },
-    },
-  };
-
   return (
-    <section id="categories" className="relative py-24 px-4 md:px-8 bg-zinc-950/40 overflow-hidden">
-      {/* Aesthetic glowing backdrop grids */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-l from-blue-500/5 to-transparent blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-r from-cyber-blue/5 to-transparent blur-[100px] pointer-events-none" />
+    <section
+      id="categories"
+      style={{
+        padding: "100px 24px",
+        background: "rgba(3,4,8,0.6)",
+        position: "relative", overflow: "hidden",
+      }}
+    >
+      {/* Ambient glows */}
+      <div style={{
+        position: "absolute", top: 0, right: 0, width: 450, height: 450,
+        background: `radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 70%)`,
+        filter: "blur(80px)", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, width: 400, height: 400,
+        background: `radial-gradient(circle, rgba(0,240,255,0.04) 0%, transparent 70%)`,
+        filter: "blur(80px)", pointerEvents: "none",
+      }} />
 
-      <div className="relative max-w-6xl w-full mx-auto z-10">
-        
-        {/* Section Title */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-white/5 pb-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-500/25 bg-blue-950/20 font-mono text-[10px] tracking-widest text-cyber-blue uppercase">
-              <span>Supported Sectors</span>
+      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
+        {/* Header */}
+        <div style={{
+          display: "flex", flexWrap: "wrap", justifyContent: "space-between",
+          alignItems: "flex-end", gap: 24,
+          paddingBottom: 36, borderBottom: "1px solid rgba(255,255,255,0.05)",
+          marginBottom: 56,
+        }}>
+          <div>
+            <div style={{
+              display: "inline-flex", padding: "5px 14px", borderRadius: 999,
+              border: `1px solid rgba(59,130,246,0.25)`, background: "rgba(59,130,246,0.07)",
+              fontFamily: "var(--font-geist-mono), monospace", fontSize: 10,
+              color: CYAN, textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 16,
+            }}>
+              Supported Sectors
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-              Endless Transaction <br />
-              <span className="bg-gradient-to-r from-electric-blue to-cyber-blue bg-clip-text text-transparent text-glow-electric">Versatility.</span>
+            <h2 style={{
+              fontSize: "clamp(1.8rem, 3.5vw, 3rem)", fontWeight: 900,
+              lineHeight: 1.15, letterSpacing: "-0.02em", color: "#fff",
+            }}>
+              Endless Transaction<br />
+              <span style={{
+                background: "linear-gradient(135deg, #3b82f6, #00f0ff)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>
+                Versatility.
+              </span>
             </h2>
           </div>
-          
-          <p className="text-white/50 text-sm sm:text-base font-light max-w-md md:text-right">
-            Whether swapping rare digital armor, milestone contracts, or domain portfolios, escrowz.lol delivers customized multi-signature lockboxes for complete escrow precision.
+          <p style={{
+            fontSize: "0.9rem", color: "rgba(255,255,255,0.45)",
+            maxWidth: 380, lineHeight: 1.7,
+          }}>
+            Whether swapping rare digital armor, milestone contracts, or domain portfolios — escrowz.lol delivers customized multi-signature lockboxes for complete escrow precision.
           </p>
         </div>
 
-        {/* Categories Card Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
-        >
-          {categoriesList.map((category) => {
-            const Icon = category.icon;
-
+        {/* Cards */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 480px), 1fr))",
+          gap: 24,
+        }}>
+          {categories.map((cat, i) => {
+            const Icon = cat.icon;
             return (
               <motion.div
-                key={category.title}
-                variants={cardVariants}
-                className={`group relative overflow-hidden glass-panel rounded-2xl p-6 sm:p-8 border border-white/5 bg-zinc-950/80 transition-all duration-500 cursor-default ${category.glow}`}
+                key={cat.title}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.65, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ borderColor: cat.hoverBorder, boxShadow: cat.hoverGlow, y: -4 }}
+                className="glass"
+                style={{
+                  borderRadius: 20, padding: "28px 30px",
+                  border: `1px solid ${cat.border}`,
+                  cursor: "default", position: "relative", overflow: "hidden",
+                  transition: "all 0.4s ease",
+                }}
               >
-                {/* Accent Background Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.bgAccent} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+                {/* Subtle bg gradient */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: `linear-gradient(135deg, ${cat.bg} 0%, transparent 60%)`,
+                  borderRadius: 20, pointerEvents: "none",
+                }} />
 
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
-                  {/* Category Title info */}
-                  <div className="space-y-2">
-                    <span className="font-mono text-[9px] tracking-wider text-cyber-blue font-bold uppercase">
-                      // {category.tag}
+                {/* Top row */}
+                <div style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+                  marginBottom: 20, position: "relative",
+                }}>
+                  <div>
+                    <span style={{
+                      fontFamily: "var(--font-geist-mono), monospace",
+                      fontSize: 9, color: cat.accent, fontWeight: 700,
+                      textTransform: "uppercase", letterSpacing: "0.12em",
+                      display: "block", marginBottom: 6,
+                    }}>
+                      // {cat.tag}
                     </span>
-                    <h3 className="text-2xl font-extrabold tracking-tight text-white group-hover:text-cyber-blue transition-colors">
-                      {category.title}
+                    <h3 style={{
+                      fontSize: "1.45rem", fontWeight: 900, color: "#fff",
+                      letterSpacing: "-0.01em",
+                    }}>
+                      {cat.title}
                     </h3>
                   </div>
-
-                  {/* Icon Box */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border self-start transition-all duration-500 group-hover:scale-110 shadow-lg ${category.iconColor}`}>
-                    <Icon className="w-5.5 h-5.5" />
+                  <div style={{
+                    width: 46, height: 46, borderRadius: 13, flexShrink: 0,
+                    background: `${cat.bg}`,
+                    border: `1px solid ${cat.border}`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <Icon size={20} color={cat.accent} />
                   </div>
                 </div>
 
-                {/* Popular Traded Items List */}
-                <div className="space-y-3 mb-8 relative z-10">
-                  <p className="font-mono text-[9px] text-white/30 uppercase tracking-widest">Supported Agreements</p>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {category.items.map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-xs text-white/60">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-cyber-blue/70 flex-shrink-0" />
-                        <span className="truncate group-hover:text-white/80 transition-colors">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Items */}
+                <p style={{
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  fontSize: 9, color: "rgba(255,255,255,0.25)",
+                  textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: 12,
+                }}>Supported Agreements</p>
+                <div style={{
+                  display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 28,
+                }}>
+                  {cat.items.map((item) => (
+                    <div key={item} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                      <CheckCircle2 size={13} color={`${CYAN}99`} style={{ flexShrink: 0 }} />
+                      <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.6)" }}>{item}</span>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Technical Metric Indicators Footer */}
-                <div className="pt-6 border-t border-white/5 grid grid-cols-3 gap-4 relative z-10">
-                  <div className="bg-zinc-900/20 border border-white/5 rounded-lg p-2.5 text-center">
-                    <p className="font-mono text-[8px] text-white/30 uppercase">Volume Protected</p>
-                    <p className="font-mono text-xs text-white font-bold mt-0.5">{category.metrics.pool}</p>
-                  </div>
-                  <div className="bg-zinc-900/20 border border-white/5 rounded-lg p-2.5 text-center">
-                    <p className="font-mono text-[8px] text-white/30 uppercase">Verification Speed</p>
-                    <p className="font-mono text-xs text-cyber-blue font-bold mt-0.5">{category.metrics.time}</p>
-                  </div>
-                  <div className="bg-zinc-900/20 border border-white/5 rounded-lg p-2.5 text-center">
-                    <p className="font-mono text-[8px] text-white/30 uppercase">Active Safe Pools</p>
-                    <p className="font-mono text-xs text-white font-bold mt-0.5">{category.metrics.active}</p>
-                  </div>
-                </div>
-
-                {/* Interactive Action Detail */}
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <ChevronRight className="w-4 h-4 text-cyber-blue" />
+                {/* Metrics footer */}
+                <div style={{
+                  paddingTop: 18, borderTop: "1px solid rgba(255,255,255,0.05)",
+                  display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10,
+                }}>
+                  {[
+                    { label: "Volume", value: cat.metrics.pool, color: "#fff" },
+                    { label: "Speed", value: cat.metrics.time, color: CYAN },
+                    { label: "Active", value: cat.metrics.active, color: "#fff" },
+                  ].map(({ label, value, color }) => (
+                    <div key={label} style={{
+                      background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.05)",
+                      borderRadius: 10, padding: "10px 8px", textAlign: "center",
+                    }}>
+                      <p style={{
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        fontSize: 8, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: 4,
+                      }}>{label}</p>
+                      <p style={{
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        fontSize: 12, color, fontWeight: 700,
+                      }}>{value}</p>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
