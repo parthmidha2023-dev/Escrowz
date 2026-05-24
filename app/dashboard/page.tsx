@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Shield, Key, Mail, Clock, LogOut, CheckCircle2, Terminal } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignOutButton } from "@clerk/nextjs";
+import Navbar from "@/components/Navbar";
 
 const CYAN = "#00f0ff";
 const BLUE = "#3b82f6";
@@ -43,6 +44,7 @@ export default async function DashboardPage() {
       overflow: "hidden",
       fontFamily: "var(--font-geist-sans), sans-serif",
     }}>
+      <Navbar />
       {/* Grid background */}
       <div className="cyber-grid" style={{
         position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: 0.15, pointerEvents: "none"

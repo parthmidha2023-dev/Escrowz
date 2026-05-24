@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useSpring, useTransform, useMotionValue } from "framer-motion";
 import { ArrowRight, CheckCircle, Lock } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const CYAN = "#00f0ff";
 const BLUE = "#3b82f6";
@@ -372,6 +374,9 @@ function DealCard() {
 
 /* ── Hero ── */
 export default function Hero() {
+  const { isSignedIn } = useUser();
+  const router         = useRouter();
+
   const scrollTo = (id: string) =>
     document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -472,7 +477,13 @@ export default function Hero() {
             style={{ display: "flex", gap: 14, flexWrap: "wrap" }}
           >
             <button
-              onClick={() => scrollTo("#features")}
+              onClick={() => {
+                if (isSignedIn) {
+                  router.push("/dashboard");
+                } else {
+                  router.push("/signup");
+                }
+              }}
               style={{
                 display: "flex", alignItems: "center", gap: 8,
                 padding: "14px 28px", borderRadius: 12,
@@ -501,7 +512,7 @@ export default function Hero() {
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = `rgba(0,240,255,0.4)`; e.currentTarget.style.background = "rgba(0,240,255,0.04)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
             >
-              Live Escrow
+              Learn More
             </button>
           </motion.div>
 

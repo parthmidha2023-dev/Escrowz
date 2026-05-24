@@ -4,18 +4,21 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Menu, X, ArrowUpRight, Terminal } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
 const CYAN = "#00f0ff";
 const BLUE = "#3b82f6";
 
-const navLinks = [
-  { name: "Features",   href: "#features"   },
-  { name: "Sectors",    href: "#categories" },
-  { name: "Live Stats", href: "#stats"      },
-];
-
 export default function Navbar() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const pathname = usePathname();
+  const isDash   = pathname === "/dashboard";
+
+  const navLinks = [
+    { name: "Features",                  href: isDash ? "/#features" : "#features" },
+    { name: isDash ? "Home" : "Dashboard", href: isDash ? "/" : "/dashboard" },
+    { name: "Socials",                   href: "/socials" },
+  ];
 
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
@@ -63,8 +66,13 @@ export default function Navbar() {
         >
           {/* Logo (left) */}
           <a
-            href="#hero"
-            onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
+            href={isDash ? "/" : "#hero"}
+            onClick={(e) => {
+              if (!isDash) {
+                e.preventDefault();
+                scrollTo("#hero");
+              }
+            }}
             style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
           >
             <div style={{
@@ -94,7 +102,12 @@ export default function Navbar() {
               <a
                 key={l.name}
                 href={l.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(l.href); }}
+                onClick={(e) => {
+                  if (l.href.startsWith("#")) {
+                    e.preventDefault();
+                    scrollTo(l.href);
+                  }
+                }}
                 style={{
                   fontFamily: "var(--font-geist-mono), monospace",
                   fontSize: 13, color: "rgba(255,255,255,0.6)",
@@ -151,7 +164,7 @@ export default function Navbar() {
 
             {isLoaded && isSignedIn && user && (
               <a
-                href="/dashboard"
+                href={isDash ? "/" : "/dashboard"}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -225,7 +238,14 @@ export default function Navbar() {
               <a
                 key={l.name}
                 href={l.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(l.href); }}
+                onClick={(e) => {
+                  if (l.href.startsWith("#")) {
+                    e.preventDefault();
+                    scrollTo(l.href);
+                  } else {
+                    setOpen(false);
+                  }
+                }}
                 style={{
                   display: "block", padding: "12px 8px",
                   fontFamily: "var(--font-geist-mono), monospace",
