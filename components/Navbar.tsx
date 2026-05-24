@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Menu, X, ArrowUpRight, Terminal } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 const CYAN = "#00f0ff";
 const BLUE = "#3b82f6";
@@ -14,6 +15,8 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { isLoaded, isSignedIn, user } = useUser();
+
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen]         = useState(false);
 
@@ -46,7 +49,7 @@ export default function Navbar() {
           transition: "top 0.3s ease",
         }}
       >
-        {/* 3-column grid: logo | nav-center | cta — guarantees true center */}
+        {/* 3-column grid layout */}
         <div
           className="glass glass-nav"
           style={{
@@ -58,7 +61,7 @@ export default function Navbar() {
             width: "100%",
           }}
         >
-          {/* ── Logo (left) ── */}
+          {/* Logo (left) */}
           <a
             href="#hero"
             onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
@@ -82,7 +85,7 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* ── Nav links (true center column) ── */}
+          {/* Nav links (center) */}
           <nav
             className="nav-desktop"
             style={{ display: "flex", gap: 32, alignItems: "center", justifyContent: "center" }}
@@ -107,43 +110,87 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* ── CTA buttons (right) ── */}
+          {/* CTA actions / User Profile Pill (right) */}
           <div
             className="nav-desktop"
             style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "flex-end" }}
           >
-            <a
-              href="/signin"
-              style={{
-                fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
-                color: "rgba(255,255,255,0.65)", textDecoration: "none",
-                padding: "7px 14px", fontWeight: 600, letterSpacing: "0.08em",
-                textTransform: "uppercase", transition: "color 0.2s", whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
-            >
-              Sign In
-            </a>
-            <a
-              href="/signup"
-              style={{
-                fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
-                background: BLUE, color: "#fff", textDecoration: "none",
-                padding: "8px 18px", borderRadius: 10, fontWeight: 700,
-                letterSpacing: "0.08em", textTransform: "uppercase",
-                display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
-                boxShadow: "0 0 20px rgba(59,130,246,0.35)",
-                transition: "box-shadow 0.2s, transform 0.15s",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 35px rgba(59,130,246,0.6)"; e.currentTarget.style.transform = "scale(1.03)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 20px rgba(59,130,246,0.35)"; e.currentTarget.style.transform = "scale(1)"; }}
-            >
-              Sign Up <ArrowUpRight size={13} />
-            </a>
+            {isLoaded && !isSignedIn && (
+              <>
+                <a
+                  href="/signin"
+                  style={{
+                    fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
+                    color: "rgba(255,255,255,0.65)", textDecoration: "none",
+                    padding: "7px 14px", fontWeight: 600, letterSpacing: "0.08em",
+                    textTransform: "uppercase", transition: "color 0.2s", whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
+                >
+                  Sign In
+                </a>
+                <a
+                  href="/signup"
+                  style={{
+                    fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
+                    background: BLUE, color: "#fff", textDecoration: "none",
+                    padding: "8px 18px", borderRadius: 10, fontWeight: 700,
+                    letterSpacing: "0.08em", textTransform: "uppercase",
+                    display: "flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
+                    boxShadow: "0 0 20px rgba(59,130,246,0.35)",
+                    transition: "box-shadow 0.2s, transform 0.15s",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 35px rgba(59,130,246,0.6)"; e.currentTarget.style.transform = "scale(1.03)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 20px rgba(59,130,246,0.35)"; e.currentTarget.style.transform = "scale(1)"; }}
+                >
+                  Sign Up <ArrowUpRight size={13} />
+                </a>
+              </>
+            )}
+
+            {isLoaded && isSignedIn && user && (
+              <a
+                href="/dashboard"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "rgba(255, 255, 255, 0.02)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "6px 14px",
+                  borderRadius: 24,
+                  textDecoration: "none",
+                  color: "#fff",
+                  fontSize: 12,
+                  fontFamily: "var(--font-geist-mono), monospace",
+                  transition: "all 0.2s",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.3)"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = CYAN;
+                  e.currentTarget.style.background = "rgba(0, 240, 255, 0.03)";
+                  e.currentTarget.style.boxShadow = `0 0 15px rgba(0, 240, 255, 0.1)`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.02)";
+                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(0,0,0,0.3)";
+                }}
+              >
+                <img
+                  src={user.imageUrl}
+                  alt="Active user avatar"
+                  style={{ width: 22, height: 22, borderRadius: "50%", objectFit: "cover" }}
+                />
+                <span style={{ fontWeight: 700, color: "#fff" }}>
+                  @{user.username || user.emailAddresses[0]?.emailAddress.split("@")[0]}
+                </span>
+              </a>
+            )}
           </div>
 
-          {/* ── Mobile: hamburger replaces CTA col ── */}
+          {/* Mobile hamburger menu */}
           <div className="nav-mobile" style={{ display: "none", justifyContent: "flex-end" }}>
             <button
               onClick={() => setOpen(!open)}
@@ -158,7 +205,7 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* ── Mobile drawer ── */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -192,19 +239,32 @@ export default function Navbar() {
               </a>
             ))}
             <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-              <a href="/signin" style={{
-                flex: 1, textAlign: "center", padding: "10px",
-                border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10,
-                color: "#fff", textDecoration: "none",
-                fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
-                textTransform: "uppercase", letterSpacing: "0.08em",
-              }}>Sign In</a>
-              <a href="/signup" style={{
-                flex: 1, textAlign: "center", padding: "10px",
-                background: BLUE, borderRadius: 10, color: "#fff", textDecoration: "none",
-                fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
-                textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700,
-              }}>Sign Up</a>
+              {isLoaded && !isSignedIn && (
+                <>
+                  <a href="/signin" style={{
+                    flex: 1, textAlign: "center", padding: "10px",
+                    border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10,
+                    color: "#fff", textDecoration: "none",
+                    fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
+                    textTransform: "uppercase", letterSpacing: "0.08em",
+                  }}>Sign In</a>
+                  <a href="/signup" style={{
+                    flex: 1, textAlign: "center", padding: "10px",
+                    background: BLUE, borderRadius: 10, color: "#fff", textDecoration: "none",
+                    fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
+                    textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700,
+                  }}>Sign Up</a>
+                </>
+              )}
+              
+              {isLoaded && isSignedIn && (
+                <a href="/dashboard" style={{
+                  flex: 1, textAlign: "center", padding: "10px",
+                  background: BLUE, borderRadius: 10, color: "#fff", textDecoration: "none",
+                  fontFamily: "var(--font-geist-mono), monospace", fontSize: 12,
+                  textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700,
+                }}>Access Dashboard</a>
+              )}
             </div>
           </motion.div>
         )}
